@@ -38,11 +38,12 @@ export const WindGraph = ({averagePeriod, setAverageWindSpeed}) => {
             }],
         });
 
-        const threshold = moment(moment.now()).subtract(averagePeriod, "minutes");
+        const threshold = dataPoints.at(-1).x.subtract(averagePeriod, "minutes");
         const filteredData = dataPoints.filter(({x}) => x.isSameOrAfter(threshold));
         const windSpeeds = filteredData.map(({y}) => y);
+        const averageWindSpeed = windSpeeds.reduce((s1, s2) => s1 + s2, 0) / windSpeeds.length
 
-        setAverageWindSpeed(windSpeeds.reduce((s1, s2) => s1 + s2, 0) / windSpeeds.length);
+        setAverageWindSpeed(averageWindSpeed);
     }, [averagePeriod, isLoading])
 
     const basicOptions = {

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {WindGraph} from "./WindGraph.jsx";
 import {Card} from "primereact/card";
 import {PowerCalculator} from "./PowerCalculator.jsx";
+import {Info} from "./Info.jsx";
 
 export const App = () => {
     const [averageWindSpeed, setAverageWindSpeed] = useState(0);
@@ -24,6 +25,9 @@ export const App = () => {
                         setAveragePeriod={setAveragePeriod}
                     />
                 </div>
+            </div>
+            <div className="grid">
+                <Info/>
             </div>
         </Card>
     );

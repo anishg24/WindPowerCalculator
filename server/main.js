@@ -5,7 +5,7 @@ import {getWeatherData} from "./getWeatherData.js";
 import "../imports/api/weatherPublications.js"
 
 const insertWeatherPoint = (point) => {
-    WeatherCollection.upsert({recordedTime: {$eq: point.recordedTime}},
+    WeatherCollection.upsert({recordedTime: {$eq: new Date(point.recordedTime)}},
         {
             recordedTime: new Date(point.startTime),
             values: point.values,
@@ -34,12 +34,17 @@ Meteor.startup(() => {
             .catch(err => console.log(err));
     }
 
-    // setInterval(function () {
-    //     const startTime = lastQuarterHourFromNow();
-    //     const endTime = moment.utc(startTime).add(1, "hours").tz("America/Los_Angeles").toISOString();
-    //     getWeatherData(startTime, endTime)
-    //         .then(({data}) => data["timelines"][0]["intervals"].forEach(e => insertWeatherPoint(e)))
-    //         .catch(err => console.log(err));
-    //     console.log("Queried more data from API");
-    // }, 15 * 60 * 1000)
+    // setInterval(async function() {
+    //     console.log(new Date(lastQuarterHourFromNow()))
+    //     console.log(await WeatherCollection.findOne({recordedTime: {$eq: new Date(lastQuarterHourFromNow())}}));
+    // }, 5 * 1000)
+
+    setInterval(function () {
+        const startTime = lastQuarterHourFromNow();
+        const endTime = moment.utc(startTime).add(1, "hours").tz("America/Los_Angeles").toISOString();
+        getWeatherData(startTime, endTime)
+            .then(({data}) => data["timelines"][0]["intervals"].forEach(e => insertWeatherPoint(e)))
+            .catch(err => console.log(err));
+        console.log("Queried more data from API");
+    }, 15 * 60 * 1000)
 });
