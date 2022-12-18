@@ -5,6 +5,7 @@ import {Divider} from "primereact/divider";
 export const Info = () => {
     return (
         <>
+            <i className={"pi pi-user"}></i>
             <Card title={"Motivation for this website"}>
                 <Divider align="left" type="dashed">
                     <b>TL;DR</b>
